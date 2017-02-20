@@ -12,6 +12,7 @@ public class ItemDO {
     private Date postTime;
     private Date gmtCreate;
     private Date gmtModified;
+    private Short deleteMark;
 
     public String getUrl() {
         return url;
@@ -78,5 +79,13 @@ public class ItemDO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Short getDeleteMark() {
+        return deleteMark;
+    }
+
+    public void setDeleteMark(Short deleteMark) {
+        this.deleteMark = deleteMark;
     }
 }

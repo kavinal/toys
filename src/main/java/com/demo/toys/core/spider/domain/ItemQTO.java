@@ -6,9 +6,18 @@ import java.util.Date;
  * Created by Kavinal on 2017/2/14.
  */
 public class ItemQTO {
+    private Long id;
     private String url;
     private String title;
     private Date postTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUrl() {
         return url;

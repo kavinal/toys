@@ -9,21 +9,48 @@
         <result column="post_date" property="postTime" jdbcType="TIMESTAMP"/>
         <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
         <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <result column="delete_mark" property="deleteMark" jdbcType="TINYINT"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.demo.toys.core.spider.domain.ItemDO">
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into item(title,url,post_date,gmt_create,gmt_modified) VALUES (#{title},#{url},#{postTime},now(),now())
+        insert into item(title,url,post_date,gmt_create,gmt_modified,delete_mark) VALUES (#{title},#{url},#{postTime},now(),now(),0)
+    </insert>
+
+    <insert id="batchInsert" keyProperty="id" useGeneratedKeys="true" parameterType="java.util.HashSet">
+        INSERT INTO item(title,url,post_date,gmt_create,gmt_modified,delete_mark) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.title},#{item.url},#{item.postTime},now(),now(),0)
+        </foreach>
+    </insert>
+
+    <insert id="batchInserts" keyProperty="id" useGeneratedKeys="true" parameterType="java.util.HashSet">
+        INSERT INTO item(title,url,post_date,gmt_create,gmt_modified,delete_mark) VALUES
+        <foreach collection="collection" item="item" separator=",">
+            (#{item.title},#{item.url},#{item.postTime},now(),now(),0)
+        </foreach>
     </insert>
 
     <select id="queryAllItem" resultMap="itemMap">
         select * from item;
     </select>
 
-    <select id="" resultMap="itemMap">
-        select * from item where
+    <select id="getByItem" resultMap="itemMap">
+        select * from item where delete_mark = 0
+        <if test="title != null">
+            AND title=#{title}
+        </if>
+        <if test="id != null">
+            AND id=#{id}
+        </if>
+        <if test="url != null">
+            AND url=#{url}
+        </if>
+        <if test="postTime != null">
+            AND postTime=#{postTime}
+        </if>
     </select>
 
 </mapper>
